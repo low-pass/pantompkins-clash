@@ -18,3 +18,11 @@ cabal.sandbox.config
 .stack-work/
 cabal.project.local
 .HTF/
+vhdl/
+work/
+*.un~
+*.swp
+*.hs~
+*.bak
+*.wlf
+*.tcl~
