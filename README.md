@@ -5,20 +5,49 @@ Pan Tompkins a.k.a. Real-Time QRS Detection Algorithm in CLaSH HDL
 
 The sources are tested to work with **clash 0.7.2** ([see clash-lang.org](http://www.clash-lang.org/) for setup instructions)
 ```
-$ clash --vhdl rolling_max.hs
+$ cd src
+$ clash --vhdl Sampler.hs
 ```
-The vhdl/ folder will contain the RTL code which is FPGA / ASIC synthesizable
+The ```src/vhdl/``` folder will contain the RTL code which is FPGA / ASIC
+synthesizable
 
 ## Simulation
 
-The free version of **ModelSim** from Intel FPGA is used to simulate the design
-functionality. Latest version can be [downloaded from Altera](http://dl.altera.com/?product=modelsim_ae).
-The repo root contains the .tcl script that can can be used to *compile the
-generated VHDL entities in the proper order* and run the simulation.
+The VHDL simulation can be very useful for running the massive amounts of data
+through the signal processing IP and for examining the waveforms and timing
+events easily. Even though CLaSH allows for testbench generation, the runtime
+data importing into its simulation is not so trivial. The temporary shoehorn
+solution is to use a simple VHDL testbench as a CSV reader and IP host for
+the simulation, prior to the actual hardware synthesis.
+
+The free version of **ModelSim** from Intel FPGA works quite reliably for such
+purposes. Latest version can be [downloaded from Altera](http://dl.altera.com/?product=modelsim_ae). To avoid manually
+recompiling the new sources in proper order in ModelSim,
+a makefile is produced with the Emacs *vhdl-mode* plugin. Standalone
+Windows version of **make** can be found [here](http://www.equation.com/servlet/equation.cmd?fa=make).
+
+For development purposes, Emacs + vhdl-mode is very useful for updating the
+VHDL sim library (see the ```makefile-gen.sh``` for more details). However, the
+"default" ```Makefile-modelsim``` is already included in the repo if one
+wants to skip straight to the simulation.
+
 ```
-ModelSim> cd <path-to-local-repo>/pantompkins-clash
-ModelSim> do compile_run.tcl
+$ cd sim
+$ make -f Makefile-modelsim
 ```
+The makefile target automatically produces the working library and ```.ini```
+file for the simulator.
+The ```sim/``` folder also contains the ```.do``` script that can can be used to
+quickly (re)compile the vhdl testbench and run the simulation. The script is
+invoked from the ModelSim console
+```
+ModelSim> cd <path-to-local-repo>/pantompkins-clash/sim
+ModelSim> do run_sim.do
+```
+
+The simulation uses the non-trivial ECG sample *v111l* from CinC Challenge
+2015<sup>[2]</sup> training set in order to expose the possible problems with
+the signal processing at the hearbeat pace boundaries.
 
 ## About
 
@@ -43,18 +72,22 @@ described in the original paper<sup>[1]</sup>, that is to include multiple
 real-life processing scenarios in addition to the core functionality.
 The significant algorithm features are listed in the table.
 
-| Done           |     To Do           |
-| -------------- | ------------------- |
-| Moving maximum | Bandpass filters    |
-|                | Moving integrator   |
-|                | Smart thresholds    |
-|                | Interval sampling   |
-|                | T-wave inhibition   |
-|                | R-R averaging       |
-|                | Kickstart mode      |
-|                | Skipped beat lookup |
+| Done              |     To Do           |
+| ----------------- | ------------------- |
+| Bandpass filters  | Skipped beat lookup |                   
+| Moving integrator | R-R averaging       |
+| Moving maximum    |                     |
+| Smart thresholds  |                     |
+| Interval sampling |                     |
+| T-wave inhibition |                     |
+| Kickstart mode    |                     |
 
 ## References
 
-**[1]** *A Real-Time QRS Detection Algorithm*, Jiapu Pan and Willis J. Tompkins, IEEE
-Transactions On Biomedical Engineering, Vol. BME-32, No. 3, March 1985
+**[1]** *A Real-Time QRS Detection Algorithm*, Jiapu Pan and Willis J. Tompkins,
+IEEE Transactions On Biomedical Engineering, Vol. BME-32, No. 3, March 1985
+
+**[2]** *Computing in Cardiology Challenge 2015*. Reducing false arrhytmia alarms
+in the icu.
+[Training set](https://physionet.org/physiobank/database/challenge/2015/training/)
+from PhysioBank Database (PhysioNet)

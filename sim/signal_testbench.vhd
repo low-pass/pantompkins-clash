@@ -10,21 +10,20 @@ architecture behav of signal_testbench is
 	file datafile 			: text open read_mode is "ecg_input.csv";
 	--file outfile 			: text open write_mode is "output.csv";
     signal filter_input           : signed (11 downto 0) := (others => '0');
-    signal filter_output          : signed (11 downto 0);
+    signal filter_output          : unsigned (11 downto 0);
     signal filter_clk             : std_logic := '0';
     signal filter_reset           : std_logic := '0';
     signal sample_ctr             : integer := 0;
 
-begin
+begin 
 
-    filter0 : entity work.rolling_max_topentity
+    filter0 : entity work.sampler_topentity
         port map (
             input_0 => filter_input,
             output_0 => filter_output,
             system1000 => filter_clk,
             system1000_rstn => filter_reset
         );
-
     simulate : process is
         variable input_var, output_var      : integer;
         variable temp_line                  : line;

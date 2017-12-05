@@ -18,11 +18,15 @@ cabal.sandbox.config
 .stack-work/
 cabal.project.local
 .HTF/
-vhdl/
-work/
+src/vhdl/
+sim/work-modelsim/
+modelsim.ini
+Makefile-modelsim~
 *.un~
 *.swp
 *.hs~
 *.bak
 *.wlf
+wlf*
 *.tcl~
+.emacs*
