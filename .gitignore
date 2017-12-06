@@ -21,6 +21,7 @@ cabal.project.local
 src/vhdl/
 sim/work-modelsim/
 modelsim.ini
+Makefile-modelsim
 Makefile-modelsim~
 *.un~
 *.swp
