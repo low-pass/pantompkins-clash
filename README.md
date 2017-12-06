@@ -62,9 +62,7 @@ ModelSim> do run_sim.do
 The output should look something like the following (colors are inverted for
 clarity)
 
-![alt text]
-(https://github.com/low-pass/pantompkins-clash/tree/master/img/waves.png
-"ModelSim waveforms (colors inverted)")
+![alt text](https://raw.githubusercontent.com/low-pass/pantompkins-clash/master/img/waves.png "ModelSim waveforms (colors inverted)")
 
 The simulation uses the non-trivial ECG sample *v111l* from CinC Challenge
 2015<sup>[2]</sup> training set in order to expose the possible problems with
